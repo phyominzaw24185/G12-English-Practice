@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>G12 English Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1e7; --card:#fffdf8; --ink:#241f1a; --muted:#7a6f62; --line:#e3d9c8;
+  --accent:#9c3b1e; --accent-ink:#fff; --ok:#1f7a45; --okbg:#e5f4ea; --bad:#b3261e; --badbg:#fbe9e7; --sel:#f3e3d0;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#171410;--card:#211d18;--ink:#efe7da;--muted:#a09484;--line:#38312a;--accent:#e58a63;--accent-ink:#1a120c;--ok:#6fd09a;--okbg:#17301f;--bad:#ff8a80;--badbg:#3a1f1c;--sel:#3a2f24}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans Myanmar",system-ui,sans-serif;line-height:1.7;font-size:16px}
+#app{max-width:760px;margin:0 auto;padding:16px 16px 80px}
+.en,.qt,.passage,.instr,.sh,.opt,.ans .a,h1,.num{font-family:"Source Serif 4",Georgia,"Noto Sans Myanmar",serif}
+h1{font-size:1.5rem;line-height:1.25;margin:2px 0 6px}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;color:var(--accent);font-weight:700}
+.lead{color:var(--muted);font-size:.92rem;margin:0 0 18px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;font-size:.9rem}
+.back{color:var(--accent);text-decoration:none;font-weight:600}
+.ex{display:flex;align-items:center;gap:6px;color:var(--muted);cursor:pointer}
+.ex input{accent-color:var(--accent);width:18px;height:18px}
+/* home */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.grid{grid-template-columns:1fr}}
+.ucard{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;transition:transform .12s}
+.ucard:active{transform:scale(.98)}
+.ucard .u{font-size:.72rem;letter-spacing:.12em;color:var(--accent);font-weight:700}
+.ucard .t{font-family:"Source Serif 4",Georgia,serif;font-weight:600;line-height:1.3;margin:2px 0 6px}
+.ucard .s{font-size:.8rem;color:var(--muted)}
+.ucard.off{opacity:.55;pointer-events:none;border-style:dashed}
+.bar{height:5px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--ok)}
+h3.gh{font-size:.8rem;letter-spacing:.1em;color:var(--muted);margin:22px 0 8px;text-transform:uppercase}
+/* unit */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 0;position:sticky;top:0;background:var(--bg);z-index:5;margin:0 -16px;padding-left:16px;padding-right:16px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--card);padding:6px 13px;border-radius:999px;font-size:.88rem;font-weight:600;white-space:nowrap}
+.tab.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 6px}
+.stat{font-size:.85rem;color:var(--muted);flex:1 1 180px}
+.stat b{color:var(--ink)}
+.btn{font:inherit;font-size:.85rem;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 12px;border-radius:10px;cursor:pointer}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:active{transform:scale(.97)}
+.sh{font-size:1.15rem;margin:18px 0 4px;border-bottom:2px solid var(--ink);padding-bottom:4px}
+.blk{margin-bottom:14px}
+.instr{font-weight:600;margin:10px 0 8px}
+.mk{color:var(--muted);font-weight:400;font-size:.9em}
+.grp{margin:16px 0 8px;text-align:center}
+.grp span{display:inline-block;border:1.5px solid var(--ink);border-radius:8px;padding:2px 14px;font-weight:700;font-family:"Source Serif 4",Georgia,serif}
+.passage{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:1rem}
+.passage .pl{font-weight:700;margin-bottom:4px}
+.passage p{margin:.5em 0;text-align:justify}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin:9px 0}
+.q.done-ok{border-color:var(--ok)}
+.q.done-bad{border-color:var(--bad)}
+.qrow{display:flex;gap:8px}
+.num{color:var(--muted);flex:none;min-width:2.1em;font-weight:600}
+.qt{flex:1;font-size:1.02rem}
+.blank{font:inherit;font-family:"Source Serif 4",Georgia,serif;border:0;border-bottom:2px solid var(--muted);background:transparent;color:var(--accent);font-weight:600;padding:0 4px;min-width:6em;max-width:100%;text-align:center;outline:none;border-radius:0}
+.blank:focus{border-bottom-color:var(--accent);background:var(--sel)}
+.blank.ok{border-bottom-color:var(--ok);color:var(--ok)}
+.blank.bad{border-bottom-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.ini{font-weight:600;white-space:nowrap}
+.gap{color:var(--accent);font-weight:700;border-bottom:2px solid var(--muted);padding:0 6px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px;margin:8px 0 2px 2.1em}
+@media(max-width:480px){.opts{margin-left:0}}
+.opt{font-size:.98rem;text-align:left;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);border-radius:10px;padding:7px 10px;cursor:pointer;display:flex;gap:8px;align-items:baseline}
+.opt b{color:var(--muted);font-size:.85em}
+.opt.sel{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+.opt.sel b{color:var(--accent-ink);opacity:.85}
+.opt.sel span::after{content:" ✓"}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+textarea{width:100%;font:inherit;font-family:"Source Serif 4",Georgia,serif;font-size:1rem;margin-top:8px;min-height:64px;padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
+textarea:focus{outline:none;border-color:var(--accent)}
+.ctl{margin-top:8px}
+.tagrow{display:flex;justify-content:flex-end;margin:-2px 0 4px}
+.yr{font-family:system-ui,sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.02em;padding:2px 9px;border-radius:999px;background:#ffe27a;color:#4a3600;border:1px solid #e0b92e}
+.yr.os{background:#bfe3ff;color:#06314f;border-color:#6fb6e8}
+.pl .yr{margin-left:8px;vertical-align:middle}
+@media(prefers-color-scheme:dark){.yr{background:#6b5410;color:#ffe9a3;border-color:#a8861f}.yr.os{background:#12476b;color:#cde9ff;border-color:#3b82b3}}
+.ans{margin-top:9px;padding:8px 11px;border-radius:9px;background:var(--sel);font-size:.95rem}
+.ans.ok{background:var(--okbg)}
+.ans.bad{background:var(--badbg)}
+.ans b{font-size:.9rem}
+.ans.ok b{color:var(--ok)}.ans.bad b{color:var(--bad)}
+.ans .a{font-weight:600}
+.al{font-size:.75rem;letter-spacing:.1em;color:var(--muted);font-weight:700}
+.self{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.self .btn.on-ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.self .btn.on-bad{background:var(--bad);color:#fff;border-color:var(--bad)}
+.xbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 14px;border:1.5px solid var(--ink);border-radius:8px;padding:8px 12px;margin:8px 0 12px;font-family:"Source Serif 4",Georgia,serif;font-size:.95rem}
+.dl{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 13px;margin:9px 0;font-family:"Source Serif 4",Georgia,serif}
+.dl p{margin:.45em 0}.dl .who{font-weight:700}
+.dl .bk{font-weight:600;white-space:nowrap}
+.dl .bk.sh{color:var(--accent)}
+.sh2{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.gp{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:9px 0;padding:0 13px}
+.gp summary{cursor:pointer;padding:11px 0;font-family:"Source Serif 4",Georgia,serif;font-weight:700;font-size:1.05rem;display:flex;gap:10px;align-items:baseline;list-style:none}
+.gp summary::-webkit-details-marker{display:none}
+.gp summary::after{content:"+";margin-left:auto;color:var(--accent);font-size:1.3rem}
+.gp[open] summary::after{content:"–"}
+.gn{color:var(--muted);font-weight:600;min-width:1.6em}
+.gpat{background:var(--sel);border-left:4px solid var(--accent);border-radius:6px;padding:6px 10px;font-family:"Source Serif 4",Georgia,serif;font-weight:700;margin:2px 0 8px}
+.grule{margin:6px 0;font-family:"Source Serif 4",Georgia,serif}
+.gex{border-top:1px dashed var(--line);padding:7px 0;font-family:"Source Serif 4",Georgia,serif}
+.gtip{font-size:.88rem;color:var(--muted);padding:6px 0 11px}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.foot{margin-top:30px;font-size:.8rem;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ============================================================
+   DATA  — Add a new unit by appending one object to DATA
+   f(q,a)   fill-in   : q with {s} = initial letter, {} = blank
+   m(q,a,b,c,k) MCQ   : {} = blank, k = correct index (0=A,1=B,2=C)
+   sh(q,a)  short answer
+   ============================================================ */
+const f=(q,a)=>({q,a});
+const m=(q,a,b,c,k)=>({q,o:[a,b,c],a:k});
+const sh=(q,a)=>({q,a});
+
+const TITLES=["GOOD MANNERS","KEY TO HAPPINESS","DIET AND NUTRITION","EMOTIONAL WELL-BEING","COLOURS","ARTIFICIAL INTELLIGENCE","POLLUTION: A HAZARD TO OUR ENVIRONMENT","RENEWABLE ENERGY","HELEN KELLER","WHY IMPROVE COMMUNICATION SKILLS?","A DAY'S WAIT","INTERCULTURAL COMMUNICATION"];
+const EXTRAS=["Poem","Unseen Passage","Letters","Essays"];
+
+const ENVY="The biggest barrier to happiness is envy, which is a state of desiring other people's qualities, possessions, opportunities, etc. In your school or workplace, you will find yourself around people who are doing much better than you are. In that case, if you try not to judge yourself against other people, you will certainly be happier. People who are envious of others are more likely to experience negative emotions such as inferiority, dejection and depression. The best thing you should do is try to replace envy with such positive emotions as sympathy or empathetic joy.";
+const KIND="Treating everyone with kindness is another key element of happiness. Acts of kindness have the potential to make the world a happier place. According to studies by psychologists in different countries, when you help other people, it is not only good for them, it also makes you feel happier. A new survey has also revealed that generous people are happier and healthier than those who are not. The idea is that generosity gives them a nice, warm feeling when people say 'thank you' and show appreciation.";
+const HEALTH="Good health also is vital for happiness. It is undeniable that healthy people are happier than those who are not. To achieve true happiness, you must be fit, both physically and mentally – a happy person has better physical and mental health. It is widely known that your mind and body are closely connected. If you feel stressed out, you are likely to experience fatigue and muscle tension. Similarly, if you feel happy and calm, you are likely to have more mental energy and more physical vitality.";
+const FRIENDS="Have a good relationship with friends and family. It seems reasonable to assume that what makes people really happy is their relationships with others. Having a wide circle of friends and family is more enjoyable than having a lot of money. In addition, people with large families and lots of close friends are happier than people who live on their own. Sometimes you may not be in a good mood or may feel depressed. At that time, if you hang out with friends or spend time with your family, your stressful feelings will be released. It has even been suggested that a happy home life and good friends can protect against illness.";
+const WORK="Love your work and enjoy what you are doing. Some people feel passionate about their work and love what they are doing. In fact, job satisfaction and career success are important factors for your happiness. For example, you tend to achieve happiness when you can accomplish the tasks you have undertaken or when you become prosperous while doing the work you enjoy.";
+
+const A_INSTR="Write the correct word or words to complete each sentence.";
+const B_INSTR="Answer each question in one sentence.";
+
+const DATA=[
+{id:1,title:"GOOD MANNERS",secs:[
+ {tab:"Q I",name:"Question No.I",blocks:[{type:"fill",instr:"Complete the sentences with the appropriate words. The initial letters are given.",marks:10,items:[
+  f("In our country, taking off {s} before entering a temple is not only a traditional practice but also a sign of respect.","shoes"),
+  f("Not only officers but also the staff perform their assigned duties {c}.","conscientiously"),
+  f("She conducted herself in a polite and respectful {m} during the entire meeting.","manner"),
+  f("Ancient Olympia was the {b} of the Olympic Games because the games were held there thousands of years ago.","birthplace"),
+  f("It is not polite to {i} someone while they are speaking.","interrupt"),
+  f("After his death, his assets will be transferred to his {c} foundation.","charitable"),
+  f("The {i} diamonds looked almost identical to the original ones, but they were slightly different in the fire, scintillation, and sparkle of the real gem.","imitated"),
+  f("{P} is important for students as being on time is also considered in their continuous assessment.","punctuality"),
+  f("In some cultures, {b} after a meal is considered a compliment to the chef.","belching"),
+  f("Love and relationships will always be a topic of {u} interest.","universal"),
+  f("He is a {c} and dedicated worker who will be an asset to your company.","conscientious"),
+  f("His comments were {c} and rude, making everyone uncomfortable at the meeting.","crude"),
+  f("{C} words are words whose meanings are shaped by a particular society and which do not have direct equivalents in other languages.",["culture-specific","culture specific"]),
+  f("It is our responsibility to protect the environment for future {g}.","generations"),
+  f("It is claimed that watching violence on TV makes some children more {a}.","aggressive"),
+  f("My brother is {a} new skills through online courses to advance his career.","acquiring"),
+  f("Clear communication is {v} in a team; if the players don't talk to each other, they will likely lose the game.","vital")
+ ]}]},
+ {tab:"Q II",name:"Question No.II",blocks:[{type:"mcq",instr:"Choose the appropriate words or phrases to complete the sentences.",marks:10,groups:{22:"From Grade-10 and Grade-11"},items:[
+  m("All motorcyclists {} wear helmets for their safety.","would","could","should",2),
+  m("One of the {} in Myanmar is to remove shoes when entering the house.","cultures","behaviours","traditions",2),
+  m("Our company is looking for staff who are friendly, helpful, cheerful, and {}.","knowledgeable","responsible","informational",1),
+  m("During the holiday season, families often gather to celebrate {} passed down through generations.","customs","traditions","cultures",1),
+  m("To have a successful garden, you need to {} the soil before planting seeds.","foster","harvest","cultivate",2),
+  m("As the older sibling, you are {} for looking out for your younger brother.","accountable","responsible","reliable",1),
+  m("The car {} reach its destination in two hours if there is not too much traffic.","can","could","would",0),
+  m("They {} have so many children if they are not able to support them.","shouldn't","can't","won't",0),
+  m("You {} be honest if you want to build trust in friendship.","must","have to","do not have to",0),
+  m("It {} be expensive to keep a pet dog for companionship and love.","can","should","must",0),
+  m("She is {} for organising the meeting for next week.","comprehensible","knowledgeable","responsible",2),
+  m("He is studying late because he {} finish his project by tomorrow.","can","must","should",1),
+  m("ABC Foundation is known for its {} efforts because it enhances health and increases access to education and opportunities around the world.","charitable","generous","strenuous",0),
+  m("You should always {} the opinions of other people.","admire","respect","think",1),
+  m("We {} eat more vegetables for a balanced diet.","should","must","can",0),
+  m("If you want to get a master’s degree, you {} study regularly.","can","should","must",1),
+  m("Parents should {} good manners to their children from an early age.","communicate","impart","inform",1),
+  m("We have a family dinner for next Sunday. Could you possibly {} me a favour and kindly look after our kitten while we are out?","do","make","create",0),
+  m("You {} go to the bank to do a transfer. You can simply do it online at any time that is convenient for you.","don't have to","mustn't","can't",0),
+  m("After graduation, we are certain that the knowledge we have {} will enable us to be successful in whatever field we may enter.","required","inquired","acquired",2),
+  m("I {} have said that. I wasn’t careful what I said to him and I hurt his feelings.","shouldn't","can't","mustn't",0),
+  m("You {} wear a helmet when riding a motorcycle for your safety.","can","will","must",2),
+  m("She always wakes up early to {} her prayers before starting the day.","ask","say","tell",1),
+  m("She {} a book when the phone rang.","reads","is reading","was reading",2),
+  m("Yupar {} to the gym twice a week. Thus, being tired does not bother her unlike us.","used to go","is used to going","is used to go",1),
+  m("LCD TVs {} popular in the early years of the 21st century.","had become","become","became",2),
+  m("We {} write letters by hand before computer was invented.","used to","would","could",0),
+  m("You’re carrying too much. {} the door for you.","I'm going to open","I'm opening","I'll open",2),
+  m("Plays and poems {} by Shakespeare are not easy to understand.","written","are written","wrote",0),
+  m("The flight {} arrived at the airport by 6 p.m tomorrow.","has","will be","will have",2),
+  m("The policemen were {} securing the crime scene and not letting anyone through.","in charge of","in favour of","in addition to",0),
+  m("According to the weather forecast, it {} rain heavily tomorrow.","may","shall","might",0),
+  m("He started feeling better {} taking the prescribed medication.","until","now","after",2),
+  m("Good luck with the exam. We {} of you throughout.","will think","are thinking","will be thinking",2),
+  m("You should always check your oil, water and tyres {} taking your car on a long trip.","after","before","while",1),
+  m("The cake {} by my grandmother was delicious.","bakes","baked","baking",1),
+  m("I’m sorry. I made you so angry. {} it again.","I won't do","I'm not doing","I'm not going to do",2),
+  m("She was working when I {} her last night.","called","had called","was calling",0),
+  m("It is necessary for you {} a seatbelt while driving a car to ensure your safety.","wear","to wear","wearing",1)
+ ]}]},
+ {tab:"Q IV (B)",name:"Question No.IV (B)",blocks:[{type:"short",instr:"Answer the questions in complete sentences.",marks:5,items:[
+  sh("Apart from home, where do children learn or acquire manners?","Apart from home, children learn or acquire manners from their school."),
+  sh("Who are the most responsible persons for imparting good manners to children?","All the elders of the present generation are the most responsible persons for imparting good manners to children."),
+  sh("How should a junior behave while being spoken to by a senior, according to Myanmar culture?","According to Myanmar culture, while being spoken to by a senior, a junior should listen with arms folded."),
+  sh("Who and what play a key role in shaping the thoughts and behaviours of teenagers and children today?","Parents and teachers, and friends and the media (such as TV, social media, and the internet) play a key role in shaping the thoughts and behaviours of teenagers and children today."),
+  sh("Where do children’s manners originate?","Children’s manners originate at home.")
+ ]}]}
+]},
+{id:2,title:"KEY TO HAPPINESS",secs:[
+ {tab:"Q I",name:"Question No.I",blocks:[{type:"fill",instr:"Complete the sentences with the appropriate words. The initial letters are given.",marks:10,items:[
+  f("{W} shopping has become my favourite pastime because I can enjoy free-of-cost shopping without buying anything.","window"),
+  f("If a person fails to get the amount of sleep that he needs, he may suffer from sleep {d}.","deprivation"),
+  f("Our math teacher always provides a {c} explanation of how to solve the problems.",["clear-cut","clear"]),
+  f("Drinking water is {v} for staying hydrated.","vital"),
+  f("My new job is giving me anxiety, so I feel depressed and suffer from extreme {f}.","fatigue"),
+  f("Studying abroad, the {l} event in my life, has an impact on my personal development.","life-changing"),
+  f("Travelling across time zones often leads to jet lag and {f}.","fatigue"),
+  f("One of the most {p} and economically significant states in Japan was impacted by the earthquake.","prosperous"),
+  f("His heart burned with {f} as a result of her words.","fury"),
+  f("Her {g} in donating to the school fund helped improve facilities for students.","generosity"),
+  f("Exams and deadlines are some of the most common {s} factors for students.",["stressful","stress"]),
+  f("Business people often think that fluency and {c} are more important than grammar when speaking.","clarity"),
+  f("My eldest brother is not {h} with his new working arrangements.","happy"),
+  f("We often hear of driver {f} being the cause of extremely serious accidents.","fatigue"),
+  f("My mother finds {m} helpful in managing her anxiety and staying calm in stressful situations.","meditation"),
+  f("She managed to overcome the {b} that stood in her way to success.","barriers"),
+  f("Many young people feel {p} about protecting the environment.","passionate"),
+  f("If {m} serves me right, the meeting was scheduled for 9 a.m., but we started an hour late.","memory"),
+  f("Job {s} can lead to a happier work life but it doesn’t equal job success in all situations.","satisfaction"),
+  f("The kidneys serve a {v} function in eliminating waste from the blood.","vital")
+ ]}]},
+ {tab:"Q II",name:"Question No.II",blocks:[{type:"mcq",instr:"Choose the appropriate words or phrases to complete the sentences.",marks:10,items:[
+  m("In an attempt to relieve their {}, they decided to go to the park.","depression","boredom","fatigue",1),
+  m("After a long day spent helping others, I feel a deep sense of {}, knowing I made a difference.","exhaustion","excitement","contentment",2),
+  m("Marie Curie was a Polish-born French physicist {} discovered polonium and radium in 1898.","who","which","whose",0),
+  m("The kitchen was in a {} state when the maid left without doing the washing-up and cleaning the dining table.","disgust","disgusted","disgusting",2),
+  m("The local community showed great {} by donating clothes and food to those in need.","generous","generously","generosity",2),
+  m("The doctor offered me valuable {} on how to maintain a healthy lifestyle.","advice","guidance","suggestion",0),
+  m("Kyi Pyar’s {} to her parents has been somewhat negative these days, caused by stress and ongoing challenges.","opinion","outlook","attitude",2),
+  m("The hotel {} we stayed during our trip to Pyin Oo Lwin last month was absolutely perfect.","in where","that","in which",2),
+  m("The reward will be presented to the participant {} performance exceeds all expectations.","who","whom","whose",2),
+  m("Tin Tin is the student {} handwriting is the best in the class.","who","whom","whose",2),
+  m("The restaurant on Main Street, {} is very nice, is owned by U Zin Aung and his sons.","which","that","what",0),
+  m("Her positive {} towards her business helped her become a senior executive.","attitude","perspective","opinion",0),
+  m("{} was the best performance in the competition?","Who","Whom","Whose",0)
+ ]}]},
+ {tab:"Q IV (B)",name:"Question No.IV (B)",blocks:[{type:"short",instr:"Answer the questions in complete sentences.",marks:5,items:[
+  sh("According to the Merriam-Webster Dictionary (2016), what is ‘happiness’?","According to the Merriam-Webster Dictionary (2016), ‘happiness’ is ‘a state of well-being and contentment’."),
+  sh("Describe the steps of practising meditation.","The steps of practicing meditation are (1) choose a calm, peaceful place where you won’t be disturbed (2) Sit in a relaxed position, either on a chair or on the floor, with your back straight (3) Pay attention to your breath as you inhale and exhale slowly."),
+  sh("Why do people need to reduce work-related stress?","People need to reduce work-related stress because it leads to severe diseases such as diabetes and heart disease."),
+  sh("What is essential for us to enjoy a better quality of life?","Good physical and mental health are essential for a better quality of life.")
+ ]}]},
+ {tab:"Q V · 1",name:"Question No.V — Passage 1",passage:[KIND,ENVY],blocks:[
+  {type:"fill",label:"(A)",instr:A_INSTR,marks:5,start:1,items:[
+   f("Treating everyone with kindness is another key element to make yourself {}.","happy"),
+   f("The people who are not generous are not as {} as generous people.","happy and healthy"),
+   f("You will find yourself that you are not doing {} like the people around you in your school or workplace.","well"),
+   f("Without {} yourself against other people, you will then certainly be happier.","judging"),
+   f("Envy should be {} with such positive emotions as sympathy or empathetic joy.","replaced")]},
+  {type:"short",label:"(B)",instr:B_INSTR,marks:5,start:6,items:[
+   sh("According to studies by psychologists, how do we feel when we help other people?","According to studies by psychologists, we feel happier when we help other people."),
+   sh("What is ‘envy’?","‘Envy’ is ‘a state of desiring other people’s qualities, possessions, opportunities, etc’."),
+   sh("Why are generous people happier and healthier than those who are not?","Generous people are happier and healthier than those who are not because generosity gives them a nice, warm feeling when people say ‘thank you’ and show appreciation."),
+   sh("Leading to greater happiness, what is the advice given for dealing with envy in school or the workplace?","Leading to greater happiness, the advice given for dealing with envy in school or the workplace is not to judge yourself against other people."),
+   sh("What negative emotions are mentioned as likely outcomes for people who are envious of others?","Negative emotions such as inferiority, dejection and depression are mentioned as likely outcomes for people who are envious of others.")]}]},
+ {tab:"Q V · 2",name:"Question No.V — Passage 2",passage:[ENVY,HEALTH],blocks:[
+  {type:"fill",label:"(A)",instr:A_INSTR,marks:5,start:1,items:[
+   f("Envy is the feeling of {} what others have.","desiring"),
+   f("Negative emotions caused by envy are inferiority, dejection, and {}.","depression"),
+   f("Healthy individuals tend to be {} than others.","happier"),
+   f("True happiness can be {} if you are physically and mentally fit.","achieved"),
+   f("It is widely known that the {} between your mind and body is strong.","connection")]},
+  {type:"short",label:"(B)",instr:B_INSTR,marks:5,start:6,items:[
+   sh("What kind of people will you encounter in your school or workplace?","In our school or workplace, we will encounter people who are doing much better than we are."),
+   sh("Why does the author suggest not judging yourself against others?","The author suggests not judging ourselves against others because it will help us be happier."),
+   sh("What emotions are suggested as a substitute for envy?","The emotions suggested as a substitute for envy are sympathy and empathetic joy."),
+   sh("When are you likely to experience fatigue and muscle tension?","We are likely to experience fatigue and muscle tension when we feel stressed out."),
+   sh("What are the benefits of feeling happy and calm?","The benefits of feeling happy and calm include having more mental energy and more physical vitality.")]}]},
+ {tab:"Q V · 3",name:"Question No.V — Passage 3",passage:[FRIENDS,WORK,"Be kind and help others. Treating everyone with kindness is another key element of happiness. Acts of kindness have the potential to make the world a happier place. According to studies by psychologists in different countries, when you help other people, it is not only good for them, it also makes you feel happier. A new survey has also revealed that generous people are happier and healthier than those who are not."],blocks:[
+  {type:"fill",label:"(A)",instr:A_INSTR,marks:5,start:1,items:[
+   f("{} of people is assumed to make them happy.","relationships"),
+   f("Spending time with {} can help release stressful feeling when you are not in a good mood.",["family","friends"]),
+   f("If some people love what they are doing, they {} about their work.",["feel passionate","are passionate"]),
+   f("Another key factor of happiness is to treat everyone {}.","with kindness"),
+   f("{} in various countries have found that people who help others also make themselves feel happier.","psychologists")]},
+  {type:"short",label:"(B)",instr:B_INSTR,marks:5,start:6,items:[
+   sh("What has been suggested as a benefit of having a happy home life and good friends?","It has been suggested that a happy home life and good friends can protect against illness."),
+   sh("According to the passage, what example is given to achieve happiness?","According to the passage, accomplishing tasks we have undertaken while doing the work we enjoy or becoming prosperous while doing the work we enjoy is an example to achieve happiness."),
+   sh("What is the finding of a new survey about the relationship between generosity and health?","The survey found that generous people are happier and healthier than those who are not."),
+   sh("Mention three suggestions that make people feel happy.","The three suggestions that make people feel happy are having good relationships with friends and family, loving our work and enjoying what we do, and being kind and helping others."),
+   sh("Which of the three suggestions is the most effective for achieving happiness?","Having good relationships with friends and family is suggested as the most effective for achieving happiness.")]}]},
+ {tab:"Q V · 4",name:"Question No.V — Passage 4",passage:[WORK.replace("Love your work and enjoy what you are doing. ",""),KIND,"The biggest barrier to happiness is envy, which is a state of desiring other people's qualities, possessions, opportunities, etc. In your school or workplace, you will find yourself around people who are doing much better than you are. In that case, if you try not to judge yourself against other people, you will certainly be happier."],blocks:[
+  {type:"fill",label:"(A)",instr:A_INSTR,marks:5,start:1,items:[
+   f("Some people have a {} for their work and they love what they are doing.","passion"),
+   f("Being {} with your job is an important factor for your happiness.","satisfied"),
+   f("Another key element of happiness is being {} to everyone.","kind"),
+   f("{} others is good for them and makes you feel happier.","helping"),
+   f("When you envy someone, you {} his or her qualities, possessions, opportunities, etc.","desire")]},
+  {type:"short",label:"(B)",instr:B_INSTR,marks:5,start:6,items:[
+   sh("According to the passage, when do we achieve happiness at work?","We achieve happiness at work when we accomplish our tasks or succeed in the work we enjoy."),
+   sh("What makes the world a happier place?","Acts of kindness make the world a happier place."),
+   sh("Why are generous people happy and healthy?","Generous people are happy and healthy because giving to others creates a warm feeling when they show appreciation."),
+   sh("According to the author, what is the biggest barrier to happiness?","According to the author, the biggest barrier to happiness is envy."),
+   sh("How can we make ourselves happy when we find that people around us are better than us?","When we find that people around us are better than us, we can be happier by trying not to judge ourselves against them.")]}]}
+]}
+];
+
+
+/* ---- past-exam tags: YY-set (set number) or YY-O (overseas paper) ---- */
+const TAGS={
+"1.0.0":"24-1 24-2 24-3 24-5 24-O 25-1 25-3 25-4 25-6 25-7 25-8 25-10 25-11 25-12 25-O 26-1 26-O",
+"1.1.0":"24-1 24-2 24-2 24-3 24-3 24-3 24-4 24-5 24-6 24-O 25-2 25-2 25-3 25-7 25-8 25-9 25-10 25-11 25-11 25-O 26-2 26-O 25-2 25-2 25-3 25-4 25-4 25-5 25-6 25-7 25-7 25-7 25-10 25-11 25-11 25-12 25-O 26-2 26-2",
+"1.2.0":"24-3 24-6 25-6 25-11 26-2",
+"2.0.0":"24-1 24-1 24-2 24-3 24-5 24-5 24-O 25-1 25-1 25-2 25-6 25-7 25-8 25-8 25-9 25-9 25-10 25-11 25-12 26-1",
+"2.1.0":"24-2 24-4 25-4 25-5 25-6 25-8 25-11 25-11 25-12 25-O 26-1 26-2 26-2",
+"2.2.0":"24-5 25-4 25-8 25-12"
+};
+const PTAGS={"2.3":"24-3","2.4":"25-2","2.5":"25-9","2.6":"26-2"};
+const tagLabel=t=>{const[y,n]=t.split("-");return "20"+y+" · "+(n==="O"?"Overseas":"Home "+n)};
+const tagHTML=t=>t?`<span class="yr${t.endsWith("-O")?" os":""}">${tagLabel(t)}</span>`:"";
+
+
+/* ================= QUESTION NO. VII : DIALOGUES ================= */
+const dA=(box,lines,ans)=>({type:"dlg",label:"(A)",instr:"Complete the dialogue with the expressions given in the box. There is an extra.",marks:5,box,lines,items:[{a:ans}]});
+const xB=(box,items)=>({type:"fill",label:"(B)",instr:"Complete the exchanges, using the expressions given in the box. There is an extra.",marks:5,start:6,box,items:items.map(([q,a])=>f(q,a))});
+const SET=(n,tag,A,B)=>({tab:"Set "+n,name:"Set "+n,tag,blocks:[A,B],note:[13,19].includes(n)?"Please double-check part (A) of this set against the book.":""});
+const T_TH="Hi, Su Mon. We haven't seen each other since the beginning of the Thadingyut holiday.";
+const T_SM="I went on a trip to Bagan with my cousins. After the trip, I helped my mum with the housework.";
+const T_NO="No, I didn't. I just stayed at home, sitting in front of the TV right after meals for about four or five hours every day, and now I've put on 5 pounds! If I go on like this, I'll gain 10 pounds by the end of this month!";
+const T_FUN="Many people try to reduce weight by doing workouts or doing sports. These will burn calories and make you more energetic.";
+const T_JP="Yes, quite a number of famous places. I visited Hokkaido in February to enjoy the Sapparo Snow Festival.";
+const T_SNOW="It's a snow festival annually held in Sapparo. About two million people came to see hundreds of snow statues and ice sculptures in the Odori Park. The International Snow Sculpture Contest was also held in the park.";
+const T_THANAKHA_Q="Everywhere I go, I see children, men, women of all ages with yellow paint on their cheeks and foreheads.";
+
+DATA.push({id:100,eyebrow:"EXTRA",title:"QUESTION NO. VII · DIALOGUES",
+note:"",
+secs:[
+SET(1,"24-1",
+ dA(["Very good","Here we go","In my opinion","Correct","The theme was","I think"],[
+  ["Host","OK. {1}! Contestant 1 Nay Nay, what was the theme of the International Day of Disabled Persons Contest 2022?"],
+  ["Nay Nay","{2} 'Transformative solutions for inclusive development: the role of innovation in fuelling an accessible and equitable world'."],
+  ["Host","{3}! Next, Contestant 2 Nyi Nyi, can you tell me the name of a deaf-blind person who was the first to get a university degree?"],
+  ["Nyi Nyi","{4} that was Helen Keller."],
+  ["Host","{5}. Helen Keller was the first deaf-blind graduate in the world."]],
+  ["Here we go","The theme was","Very good","I think","Correct"]),
+ xB(["Very good","Here we go","In my opinion","No, thanks.","I don't like your idea","That's what I think too.","Yes, please.","That sounds like a great idea!","Why don't you buy that ring?"],[
+  ["A: We need to study more for the final exam.\nB: {} I've only revised three units so far.","That's what I think too."],
+  ["A: I don't know what gift I should give Ma Ma on her birthday.\nB: Look! {} It's beautiful.","Why don't you buy that ring?"],
+  ["A: How about painting the living room blue?\nB: {} I prefer green.","I don't like your idea"],
+  ["A: Are you free tonight? Shall we go to the cinema?\nB: {}","That sounds like a great idea!"],
+  ["A: Would you like a glass of water?\nB: {} I'm not thirsty.","No, thanks."]])),
+SET(2,"24-2",
+ dA(["What have you been doing?","What sports would you recommend?","I just stayed at home","Did you go anywhere?","Why don't you take up something challenging?","What about you?"],[
+  ["Thinzar","Hi, Su Mon. {1}"],
+  ["Su Mon","I went on a trip with my cousins. {2}"],
+  ["Thinzar","No I didn't. {3}, sitting in front of TV right after meals for about four or five hours every day, and now I've put on 5 pounds!"],
+  ["Su Mon","If it's your real concern, {4} Many people try to reduce weight by doing workouts or doing sports."],
+  ["Thinzar","I think it's a good idea. {5}"]],
+  ["What have you been doing?","Did you go anywhere?","I just stayed at home","Why don't you take up something challenging?","What sports would you recommend?"]),
+ xB(["What were you working on?","I'll be in a meeting","What has happened to you?","Could you please guide me?","I haven't had any time yet","How are you doing?"],[
+  ["A: Hi, Ko Ko. {}\nB: I've just returned from the Head Office. Nay Pyi Taw is a great city!","What has happened to you?"],
+  ["A: {}\nB: I was photocopying a report.","What were you working on?"],
+  ["A: Have you visited any museums yet?\nB: {}","I haven't had any time yet"],
+  ["A: Would you like to call back?\nB: I'm afraid. {}. Could I leave a message?","I'll be in a meeting"],
+  ["A: I think, you are bad at managing time.\nB: {}","Could you please guide me?"]])),
+SET(3,"24-3",
+ dA(["I just stayed at home","why don't you take up something challenging","I don't think so","I think it's a good idea","What have you been doing","What about you"],[
+  ["Thinzar",T_TH+" {1}?"],
+  ["Su Mon",T_SM+" {2}? Did you go anywhere?"],
+  ["Thinzar","No, I didn't. {3}, sitting in front of the TV right after meals for about four or five hours every day, and now I've put on 5 pounds! If I go on like this, I'll gain 10 pounds by the end of this month!"],
+  ["Su Mon","If it's your real concern, {4}? "+T_FUN],
+  ["Thinzar","{5}. That will reduce my weight and I'll also have a chance to go out."]],
+  ["What have you been doing","What about you","I just stayed at home","why don't you take up something challenging","I think it's a good idea"]),
+ xB(["I'm very sorry,","It's nice to see you here again.","Lucky you!","Ah, I agree with you.","In my opinion,","What a great idea!"],[
+  ["A: I just found out I won a free trip to Hawaii!\nB: {} How did that happen?","Lucky you!"],
+  ["A: I think spending time outdoors is the best way to relax.\nB: {} The fresh air and nature really make a difference.","Ah, I agree with you."],
+  ["A: Hi, it's been a long time we haven't seen each other!\nB: {} How have you been?","It's nice to see you here again."],
+  ["A: How about we have a picnic in the park this weekend?\nB: {} I love spending time outdoors.","What a great idea!"],
+  ["A: The new policy is a step in the right direction.\nB: {} it still has some flaws that need to be addressed.","In my opinion,"]])),
+SET(4,"24-4",
+ dA(["Does it come in","I'd love to","Who are they trying","you can","What do you mean","you'd rather"],[
+  ["Mary","Sandar! May I ask a question about Myanmar customs and practices?"],
+  ["Sandar","Of course, {1}! Please do."],
+  ["Mary","I am not being impolite ... but I am very curious."],
+  ["Sandar","Please, feel free to ask!"],
+  ["Mary","Why do Myanmar people paint their faces yellow?"],
+  ["Sandar","{2}?"],
+  ["Mary",T_THANAKHA_Q+" {3} to hide from?"],
+  ["Sandar","[laughing] Mary, no they are not trying to hide from anyone or anything!"],
+  ["Mary","Do they wear it for religious reasons? Is the paint sacred? {4} other colours? Is the paint imported from China?"],
+  ["Sandar","Oh Mary, you have many questions! First of all, it is not paint. It is thanakha!"],
+  ["Mary","Thanakha...."],
+  ["Sandar","Would you like to know more?"],
+  ["Mary","Thanks, {5}."]],
+  ["you can","What do you mean","Who are they trying","Does it come in","I'd love to"]),
+ xB(["Do you think","Let's go","I completely agree with you","What about you","What do you think","Let's meet"],[
+  ["A: Hi Thiri, have you started doing your assignment on 'The Last Leaf'?\nB: Not yet. I've been reflecting on the story. {}?","What about you"],
+  ["A: We are of the same mind. I've made some notes on the themes and characters, but I think we should discuss the topic before doing the assignment.\nB: Absolutely, collaboration could bring out some different views and interesting perspectives. {} are the most important things in the story?","What do you think"],
+  ["A: Well, I'm focusing on the symbolism of the last leaf and the themes of hope and sacrifice.\n{} that a strong attachment between Sue and Johnsy is a key element?\nB: Right, I'm also fascinated by the entire Greenwich Village setting. It adds this unique backdrop to the narrative.","Do you think"],
+  ["A: {} It sets the scene for the struggling artists and the bohemian atmosphere. How about meeting up later to go over our notes and brainstorm some ideas for the assignment?\nB: Great! I've never thought of that before. What time would be convenient for us?","I completely agree with you"],
+  ["A: {} at the library during our lunch break. That gives us a chance to share our ideas.\nB: OK. See you at the library then.\nA: See you!","Let's meet"]])),
+SET(5,"24-5",
+ dA(["It's nice to see you","Oh, it's great","What did you do there","What kind of festival is it","That sounds amazing","Lucky you"],[
+  ["Yadanar","{1} here again. Did you have a good time in Japan?"],
+  ["Nan Su","{2}! I stayed there for a month."],
+  ["Yadanar","Did you? {3}! Did you visit any famous places there?"],
+  ["Nan Su",T_JP],
+  ["Swan Htet","Really? {4}."],
+  ["Yadanar","{5}?"],
+  ["Nan Su",T_SNOW]],
+  ["It's nice to see you","Oh, it's great","Lucky you","That sounds amazing","What kind of festival is it"]),
+ xB(["What a great idea!","That's exactly how I feel.","Lucky you!","What is a great idea?","You should have self-confidence.","What do you suggest?"],[
+  ["A: I'm very worried about my job interview.\nB: {}","You should have self-confidence."],
+  ["A: I do not get along with one of my friends. {}\nB: You'd better respect her and treat her with kindness.","What do you suggest?"],
+  ["A: Our manager has good communication skills.\nB: {} He listens to us and respects our viewpoints.","That's exactly how I feel."],
+  ["A: I was promoted to a higher position last month.\nB: {}","Lucky you!"],
+  ["A: Let's go shopping this weekend.\nB: {}","What a great idea!"]])),
+SET(6,"24-6",
+ dA(["See you","Lucky you!","Yes. That's right.","Yes, of course. I will.","Why don't you take a taxi?","It's been a while since we last met."],[
+  ["Thurein","Khant Khant! How are things? Long time no see."],
+  ["Khant Khant","Hey, Thurein! {1}"],
+  ["Thurein","I heard you went back to your hometown after the exam."],
+  ["Khant Khant","{2} That's my parents' hometown too. I really love staying there, a beautiful hill station."],
+  ["Thurein","{3} Actually, I'd like to visit a hill station in the hot season."],
+  ["Khant Khant","Really? Will you come with me after the exam?"],
+  ["Thurein","{4} I'm sure my parents will allow me to go with you."],
+  ["Khant Khant","That's great! I will show you the beauty of my hometown. Well, I must leave now. It's nice talking with you. See you later. Bye."],
+  ["Thurein","{5} Bye."]],
+  ["It's been a while since we last met.","Yes. That's right.","Lucky you!","Yes, of course. I will.","See you"]),
+ xB(["Please don't mention it.","Sure, I'd love to. Let's do this.","Really? Have a nice trip!","What about you?","Yes, please.","You should study regularly."],[
+  ["A: I am flying to Mandalay tomorrow. I will spend my Thingyan holiday there.\nB: {}","Really? Have a nice trip!"],
+  ["A: There will be a talent show next month. Shall we take part in it?\nB: {}","Sure, I'd love to. Let's do this."],
+  ["A: We won't finish our work in time without your help. Thanks for everything.\nB: {}","Please don't mention it."],
+  ["A: Would you like some more coffee?\nB: {}","Yes, please."],
+  ["A: I agreed with what the presenter said. {}\nB: Me too. I totally agreed with his idea.","What about you?"]])),
+SET(7,"24-O",
+ dA(["Lucky you","Me too","What kind of festival is it","Interesting","Oh, it's great","That sounds amazing"],[
+  ["Yadanar","It's nice to see you here again. Did you have a good time in Japan?"],
+  ["Nan Su","{1}! I stayed there for a month."],
+  ["Yadanar","Did you? {2}! Did you visit any famous places there?"],
+  ["Nan Su",T_JP],
+  ["Swan Htet","Really? {3}."],
+  ["Yadanar","{4}?"],
+  ["Nan Su",T_SNOW],
+  ["Yadanar","Wow! {5}! What did you see there?"]],
+  ["Oh, it's great","Lucky you","That sounds amazing","What kind of festival is it","Interesting"]),
+ xB(["Now you're talking.","That's exactly how I feel.","You should sleep for some time.","Thanks, I got them on sale.","Uh-uh. I'm reading a book.","Yes, sure. Here you go."],[
+  ["A: You look tired. {}\nB: I appreciate your concern.","You should sleep for some time."],
+  ["A: Sunsets by the beach are breathtaking.\nB: {}","That's exactly how I feel."],
+  ["A: Did you want to go to a movie?\nB: {}","Uh-uh. I'm reading a book."],
+  ["A: You don't want hamburgers. Well, how about steak?\nB: {}","Now you're talking."],
+  ["A: I love your new shoes.\nB: {}","Thanks, I got them on sale."]])),
+SET(8,"25-1",
+ dA(["Absolutely yes.","Really? I see.","On the top of that,","That's fascinating.","Thanks for having me.","Would you like anything to drink?"],[
+  ["Host","We are delighted to welcome a colour psychologist Dr. Thiri."],
+  ["Dr. Thiri","Good to see you. {1}"],
+  ["Host","What does it say if you wear red or if you have red in your home?"],
+  ["Dr. Thiri","Red is the colour of passion. It is also an appetite stimulant, so if you use a red plate while eating, it will make you want to eat more."],
+  ["Host","{2} This must be a reason why a lot of fast-food restaurants use red."],
+  ["Dr. Thiri","{3} It stimulates your digestion."],
+  ["Host","Should we change the story with blue?"],
+  ["Dr. Thiri","Yes, blue is the colour of the sky and the ocean. {4} blue conveys strength and dependability. The colour can't dictate your behavior but it can help you."],
+  ["Host","{5} Thank you for your informative talk."]],
+  ["Thanks for having me.","Really? I see.","Absolutely yes.","On the top of that,","That's fascinating."]),
+ xB(["What's the rush?","Are you serious?","What are you up to?","You had an art class?","Did it get better?","Do you work well under pressure?"],[
+  ["A: {}\nB: Not much, just work.","What are you up to?"],
+  ["A: {}\nB: I'm still feeling under the weather.","Did it get better?"],
+  ["A: My boss offered me a promotion.\nB: {}","Are you serious?"],
+  ["A: {}\nB: Exactly, it was my favourite one.","You had an art class?"],
+  ["A: I'll talk to you later.\nB: {}","What's the rush?"]])),
+SET(9,"25-2",
+ dA(["but I am very curious","Is the paint sacred","May I ask question","Please do","What do you mean","Who are they trying to hide from"],[
+  ["Kate","Thuzar! {1} about Myanmar customs and practices?"],
+  ["Thuzar","Of course, you can! {2}."],
+  ["Kate","I am not being impolite. {3}."],
+  ["Thuzar","Please, feel free to ask!"],
+  ["Kate","Why do Myanmar people paint their faces yellow?"],
+  ["Thuzar","{4}?"],
+  ["Kate",T_THANAKHA_Q+" {5}?"],
+  ["Thuzar","[laughing] Kate, no they are not trying to hide from anyone or anything!"]],
+  ["May I ask question","Please do","but I am very curious","What do you mean","Who are they trying to hide from"]),
+ xB(["Fortune smiled on me.","It's fantastic.","No. That's all. Thanks.","Thank you so much","That's great! I'd love to.","Who is calling, please?"],[
+  ["A: Hey, Look out!\nB: {}","Thank you so much"],
+  ["A: How did you find the festival?\nB: {} Music, fireworks and celebrations are exciting.","It's fantastic."],
+  ["A: Hello. Can I speak to Aung Aung, please?\nB: {}","Who is calling, please?"],
+  ["A: How did you get this job:\nB: {}","Fortune smiled on me."],
+  ["A: Would you like to come with us?\nB: {}","That's great! I'd love to."]])),
+SET(10,"25-3",
+ dA(["why don't you take up","What have you been doing","Here is my point","I prefer individual sports","I think it's a good idea","What about you"],[
+  ["Thinzar",T_TH+" {1}?"],
+  ["Su Mon",T_SM+" {2}? Did you go anywhere?"],
+  ["Thinzar",T_NO],
+  ["Su Mon","If it's your real concern, {3} something challenging? "+T_FUN],
+  ["Thinzar","{4}. That will reduce my weight and I'll also have a chance to go out. What sports would you recommend?"],
+  ["Su Mon","Well, you can take up either team sports or individual sports. Both are good for health. With team sports you can develop a sense of fair play and social skills. Some of my classmates are doing team sports like basketball, volleyball and football."],
+  ["Thinzar","For me, {5}."]],
+  ["What have you been doing","What about you","why don't you take up","I think it's a good idea","I prefer individual sports"]),
+ xB(["That's really wonderful.","Not at all.","That's amazing! I wish I were also there!","Lucky you!","Sure, I'd love to!","Wow! Interesting! What did you see there?"],[
+  ["A: Is it difficult to pay bills online?\nB: {} I will show you how to use the application.","Not at all."],
+  ["A: If you're free, would you like to accompany me?\nB: {} But I have to tell my supervisor first whether I can take three days' leave from job.","Sure, I'd love to!"],
+  ["A: Last night, I went to an incredible music concert with my colleagues.\nB: {}","That's amazing! I wish I were also there!"],
+  ["A: Have you heard that your close friend won the lottery?\nB: {}","That's really wonderful."],
+  ["A: I have just come back from Moeyangyi Wetland Bird Sanctuary.\nB: {}","Wow! Interesting! What did you see there?"]])),
+SET(11,"25-4",
+ dA(["it's about","I agree with you","do you think","What do you think","you're right","do you like"],[
+  ["A","Ni Mar, {1} the short story 'The Last Leaf'?"],
+  ["B","Of course. I like the characters of the story, Sue, Johnsy and Behrman."],
+  ["A","{2} the theme of the story is?"],
+  ["B","I think {3} friendship. The characters share similar passions. All of them are artists and they love art. And when Johnsy falls ill, Sue manages all her care. She also encourages her to think positively."],
+  ["A","Mr Behrman helps Johnsy survive, too. He takes the risk of falling ill – he paints a green leaf on the wall opposite in the heavy rain. That's why I think the theme of the story is selfless sacrifice."],
+  ["B","Hmm, {4}. Sue is also willing to sacrifice her wishes and time for her friend."],
+  ["A","Yes, it proves that love and kindness is more valuable than expensive material possessions."],
+  ["B","Ah, {5}."]],
+  ["do you like","What do you think","it's about","you're right","I agree with you"]),
+ xB(["What I'm saying","Would you like to join us?","I would like to say","What's the matter?","shall we?","I guess so."],[
+  ["A: Hey, Cindy. {} You looked really down.\nB: Right, I got only 70 marks in Biology in the last monthly test. It's quite depressing.","What's the matter?"],
+  ["A: Are you going to watch the final tonight?\nB: Yeah, my friend is coming to my house to watch it. {}","Would you like to join us?"],
+  ["A: The coat you gave me on my birthday is great for me. Also its colour is cute.\nB: {} Actually, I bought it when I went to Thailand.","I guess so."],
+  ["A: Why are you around here?\nB: We're planning to take something solid. Let's go to the canteen, {}","shall we?"],
+  ["A: What is your favourite place to visit?\nB: {} it is Padaya Cave.","I would like to say"]])),
+SET(12,"25-5",
+ dA(["Why do parents put it","What's your suggestion","Is thanakha expensive","The price depends on","What do you think","I think it is a good practice"],[
+  ["Mary","I have also seen young women, who do not work outside in the sun, with thin creamy thanakha spread on their faces. {1} about women of our age, putting thanakha on their faces?"],
+  ["Sandar","{2}. They are taking care of their skin."],
+  ["Mary","{3} on the faces of their children?"],
+  ["Sandar","Thanakha helps protect the children's faces from the sun. It is also soothing to the skin and smells nice. Parents, who have children, also do this to show their love."],
+  ["Mary","{4}?"],
+  ["Sandar","{5} which product is used."]],
+  ["What do you think","I think it is a good practice","Why do parents put it","Is thanakha expensive","The price depends on"]),
+ xB(["That's so true!","I'm not sure!","Not at all.","That's a wonderful choice.","So did I.","Neither am I."],[
+  ["A: I watched the comedy show on TV last night.\nB: {} I really enjoyed it.","So did I."],
+  ["A: Ngwe Saung beach would be a great place for the summer holidays.\nB: {} We can have a lot of fun there.","That's a wonderful choice."],
+  ["A: Would you mind if I used your phone to make a call?\nB: {} Go ahead.","Not at all."],
+  ["A: I'm not going to the concert next week.\nB: {} I haven't finished my project yet.","Neither am I."],
+  ["A: I read an article that said reading before bed helps us fall asleep faster.\nB: {} I've tried it before and it really works.","That's so true!"]])),
+SET(13,"25-6",
+ dA(["Actually","I've got an idea","If you're free","Anyway","Let's go","Where are you going"],[
+  ["Yoon Yati","Hi! {1}?"],
+  ["Sandy","Hi! Yoon. I'm going to the library. {2}, would you like to accompany me?"],
+  ["Yoon Yati","{3}, I borrowed a documentary film yesterday. {4}, I will come along with you."],
+  ["Sandy","OK, {5}."]],
+  ["Where are you going","If you're free","Actually","Anyway","Let's go"]),
+ xB(["That's a shame!","I really don't know what to say.","I think it's a good idea.","What about you!","Let's try.","What was it like?"],[
+  ["A: I love going for a walk in the evenings. {}\nB: I prefer jogging in the mornings, but evening walks sound relaxing too.","What about you!"],
+  ["A: We should go to the park this weekend. The weather will be perfect for it.\nB: {} I could use some fresh air!","I think it's a good idea."],
+  ["A: I just found out that the concert has been canceled.\nB: {} I was really looking forward to it.","That's a shame!"],
+  ["A: I just returned from my vacation in the mountains.\nB: {}\nA: It was amazing! The scenery was beautiful, and the hiking trails were incredible.","What was it like?"],
+  ["A: I heard you won the competition! Congratulations!\nB: {} I wasn't expecting to win!","I really don't know what to say."]])),
+SET(14,"25-7",
+ dA(["with my studies all the time","What's wrong with you","for leisure activities","What should I do","some strategies to relax","Why don't you exercise regularly"],[
+  ["Nilar","Hello, Thazin. You look tired. {1}?"],
+  ["Thazin","You know, I've got a lot of pressure from my parents. They want me to get good marks in all subjects. So I've been busy {2}."],
+  ["Nilar","Oh, I see. You're feeling stressed out. You should find {3} before it gets worse."],
+  ["Thazin","I think you're right. {4}?"],
+  ["Nilar","You should have some time {5}. For example, you should take up a hobby like drawing or cooking."],
+  ["Thazin","That's true. I haven't thought about it. Actually, I'm interested in drawing. OK, I'll do that. Thank you for your suggestions."]],
+  ["What's wrong with you","with my studies all the time","some strategies to relax","What should I do","for leisure activities"]),
+ xB(["Oh, I'm sorry to hear that!","I envy you.","No, what about her?","What about you?","I hear you've been ill.","Congratulations!"],[
+  ["A: Did you say you're going to take a vacation next month?\nB: Yes, my family and I are going to New York for a week.\nA: {} I haven't had a vacation for a long time.","I envy you."],
+  ["A: I am happy. I just heard I passed my physics exam.\nB: {} I'm glad somebody's happy.","Congratulations!"],
+  ["A: {}\nB: Well, I had the flu for a couple of weeks, but I'm fine now.","I hear you've been ill."],
+  ["A: By the way, did you hear about Mrs. Jackson?\nB: {}","No, what about her?"],
+  ["A: She had such a bad case of the flu that they had to take her to the hospital.\nB: {}","Oh, I'm sorry to hear that!"]])),
+SET(15,"25-8",
+ dA(["anyone will mind","I'll set up the group","That sounds like","How about going for a hike","should we bring","I love that suggestion"],[
+  ["Yamin","You know; I've been thinking about our weekend plans. I really want to do something fun and exciting."],
+  ["Thuzar","I agree. We've been working so hard lately; we deserve a break. {1} in the mountains? The weather is supposed to be great."],
+  ["Yamin","{2} a fantastic idea! I love hiking. Maybe we can also have a picnic there."],
+  ["Thuzar","Absolutely. We can pack some sandwiches and snacks. While we are at it, {3} a Frisbee along? It could be fun to play around after our hike."],
+  ["Yamin","It would be a great way to relax."],
+  ["Thuzar","Yes, definitely. I don't think {4}. How about creating a group chat?"],
+  ["Yamin","That's a good idea. {5} right now."],
+  ["Thuzar","That is going to be a great weekend."],
+  ["Yamin","I agree with your point."]],
+  ["How about going for a hike","That sounds like","should we bring","anyone will mind","I'll set up the group"]),
+ xB(["what a mess","it's concerning","Would you like to put it","would you be able to settle","Walk straight","broke down on the way"],[
+  ["A: Excuse me, I'm looking for the museum. Can you point me in the right direction?\nB: {} for three blocks until you reach the park. Then, turn left.","Walk straight"],
+  ["A: Before you go, {} the mini-bar bill?\nB: Certainly! How much will that be?","would you be able to settle"],
+  ["A: I'd like to check out the book 'The Great Gatsby' but I can't seem to find it on the shelf.\nB: That book has been checked out until next week. {} on hold?","Would you like to put it"],
+  ["A: Have you read about the latest data breaches?\nB: Yes, {}. We need better security measures.","it's concerning"],
+  ["A: You should have come to the station earlier.\nB: I caught the bus on time, but it {} and I had to walk.","broke down on the way"]])),
+SET(16,"25-9",
+ dA(["Right!","deadly chemical from e-waste","You look so tired","I'm not going to use","might be responsible","personally, I think"],[
+  ["Khant Hpone","Hi, Kaung Htet. {1}. What have you got in that bag?"],
+  ["Kaung Htet","Hello, Khant Hpone. They are my old UPS and a broken printer. {2} them anymore because I've got new ones."],
+  ["Khant Hpone","You are going to throw them away, aren't you?"],
+  ["Kaung Htet","{3} I'll put them in the dumpster."],
+  ["Khant Hpone","Oh, no. Electronic waste like this is non-biodegradable. If they are brought to a landfill site, they won't break down and will remain on the land for at least 50 years. That is why, {4} will contaminate the soil and leak into water bodies."],
+  ["Kaung Htet","Hmm. I {5} for land and water pollution."]],
+  ["You look so tired","I'm not going to use","Right!","deadly chemical from e-waste","might be responsible"]),
+ xB(["I'm always losing things","Yeah, it really is.","This time tomorrow","There's no need to worry.","I told you","I ate too many fries."],[
+  ["A: So, Kyaw Paing, have you thought about which university you want to go to yet?\nB: {}, Mum – I'm not so sure that I want to go to university.","I told you"],
+  ["A: Are you going to have dessert?\nB: No, I'm too full. {}","I ate too many fries."],
+  ["A: {}, my friend and I will be sitting on a train.\nB: Really? Where are you going? Anywhere nice?","This time tomorrow"],
+  ["A: Sometimes I'm so disorganized. {}, like pens and stuff.\nB: Yeah, but at least you don't lose anything really valuable, right?","I'm always losing things"],
+  ["A: I'm taking my driving test tomorrow, and I really hope I don't fail.\nB: {} You can take the test again, I think.","There's no need to worry."]])),
+SET(17,"25-10",
+ dA(["By the way","As far as I'm concerned","Anyway","Yes, of course","As a matter of fact","I've got an idea"],[
+  ["Yoon Yati","What would you like to borrow?"],
+  ["Sandy","{1}, I haven't decided yet. I'll browse the shelf, first."],
+  ["Yoon Yati","{2}, what's the title of the book that you're holding? Is he the same author who wrote 'A Day's Wait'?"],
+  ["Sandy","{3}. It's Hemingway's 'Nick Adam Stories'."],
+  ["Yoon Yati","I find 'A Day's Wait' interesting. {4}, the main character failed to notice the different measurement systems of body temperature."],
+  ["Sandy","Yes, a little learning is a dangerous thing. That's why we need to read more, learn more and explore more."],
+  ["Yoon Yati","Well, {5}, I would try reading his novella 'The Old Man and the Sea'."]],
+  ["Anyway","By the way","Yes, of course","As a matter of fact","I've got an idea"]),
+ xB(["So do I!","If I were you,","Absolutely right!","That's a shame!","That's fascinating!","Let's say"],[
+  ["A: I believe the key to success is hard work and perseverance.\nB: {} Without determination, it's difficult to achieve your goals.","Absolutely right!"],
+  ["A: Did you know that some animals can communicate using sound waves?\nB: {} I had no idea animals could communicate like that.","That's fascinating!"],
+  ["A: {} I get to the event early, we can get the best seats.\nB: That sounds like a good plan. We should aim to arrive early.","Let's say"],
+  ["A: {} I would definitely apply for that job.\nB: Thanks for the advice! I'll think about it.","If I were you,"],
+  ["A: I really enjoy reading mystery novels in my free time.\nB: {} They always keep me guessing until the end.","So do I!"]])),
+SET(18,"25-11",
+ dA(["I don't agree with you","Both are good for health","I think it is a good idea","What about you","why don't you take up","What have you been doing"],[
+  ["Thinzar",T_TH+" {1}?"],
+  ["Su Mon",T_SM+" {2}? Did you go anywhere?"],
+  ["Thinzar",T_NO],
+  ["Su Mon","If it's your real concern, {3} something challenging? "+T_FUN],
+  ["Thinzar","{4}. That will reduce my weight and I'll also have a chance to go out. What sports would you recommend?"],
+  ["Su Mon","Well, you can take up either team sports or individual sports. {5}."]],
+  ["What have you been doing","What about you","why don't you take up","I think it is a good idea","Both are good for health"]),
+ xB(["Can I try on this jacket?","I don't think so.","I'd love to.","Your guess is as good as mine.","What a shame!","Wow! Congratulations!"],[
+  ["A: We're going to a restaurant for dinner this evening. Would you like to come with us?\nB: That's great. {} Where shall we meet? And when?","I'd love to."],
+  ["A: {}\nB: Sure. You can. The fitting rooms are over there.","Can I try on this jacket?"],
+  ["A: I've something to tell you. I've got a job.\nB: {} You must be proud of it.","Wow! Congratulations!"],
+  ["A: She failed her English test again.\nB: {}","What a shame!"],
+  ["A: When do you think the power will come back on?\nB: {}","Your guess is as good as mine."]])),
+SET(19,"25-12",
+ dA(["Did you have a good time in Japan","What kind of festival is it","What did you see there","Did you try any Japanese specialties","Did you visit any famous places there","Really"],[
+  ["Yadanar","It's nice to see you here again. {1}?"],
+  ["Nan Su","Oh, it's great! I stayed there for a month."],
+  ["Yadanar","Did you? Lucky you! {2}?"],
+  ["Nan Su","Yes, quite a number of famous places. I visited Hokkaido to enjoy the Sapparo Snow Festival."],
+  ["Swan Htet","That sounds amazing. {3}?"],
+  ["Nan Su","It's a snow festival annually held in Sapparo."],
+  ["Yadanar","Interesting! {4}?"],
+  ["Nan Su","Statues of famous buildings. Some musical performances were held on the stages made of snow."],
+  ["Swan Htet","What a great idea! {5}?"]],
+  ["Did you have a good time in Japan","Did you visit any famous places there","What kind of festival is it","What did you see there","Did you try any Japanese specialties"]),
+ xB(["Good luck!","Here you are.","I'd love to.","I've got a headache.","No, not at all.","You're absolutely right."],[
+  ["A: Would you mind telling me how I can apply to your school?\nB: {}","No, not at all."],
+  ["A: Your passport, please.\nB: {}","Here you are."],
+  ["A: Hopefully, I'll get a well-paid job to support my family.\nB: {}","Good luck!"],
+  ["A: What's your problem?\nB: {}","I've got a headache."],
+  ["A: Would you like to join us?\nB: {}","I'd love to."]])),
+SET(20,"25-O",
+ dA(["Thanakha","Thanakha is a tree","Thanks, I'd love to","This is very interesting","Of course, you can","It is thanakha"],[
+  ["Sandar","Oh Mary, you have many questions! First of all, it is not paint. {1}!"],
+  ["Mary","{2} ..."],
+  ["Sandar","Would you like to know more?"],
+  ["Mary","{3}!"],
+  ["Sandar","{4}. The bark is ground on a flat circular stone with water to get a paste. It is used as a beauty treatment and sometimes, medicine."],
+  ["Mary","{5}. Do you know that I am a beauty and cosmetic specialist?"]],
+  ["It is thanakha","Thanakha","Thanks, I'd love to","Thanakha is a tree","This is very interesting"]),
+ xB(["So did I.","That's too bad!","Go ahead.","I also think so.","I'm not sure about that.","Why not?"],[
+  ["A: In my opinion, mothers work harder than fathers.\nB: Really? {} I think they both work equally hard.","I'm not sure about that."],
+  ["A: Would you mind if I used your computer for a few minutes?\nB: Not at all. {}","Go ahead."],
+  ["A: What about playing tennis tomorrow?\nB: {} When shall we meet?","Why not?"],
+  ["A: I think our dining room needs more chairs for the party.\nB: {} We are having more guests than the previous one.","I also think so."],
+  ["A: I went to the cinema last night.\nB: What a coincidence. {}","So did I."]])),
+SET(21,"26-1",
+ dA(["Absolutely","Shall we book a beachfront hotel","It's a great idea","How should we get there","Do you have any suggestions","How about going to a beach"],[
+  ["Hnin Thiri","I feel like escaping the city for a bit. Well! {1}?"],
+  ["Htwe Thiri","{2}? Actually, Chaungtha Beach is a great place for recreation. It's not too far away from Yangon. What's more, it has a relaxing atmosphere."],
+  ["Hnin Thiri","That sounds amazing. {3}?"],
+  ["Htwe Thiri","We could take a highway bus to Pathein and then change to another bus to Chaungtha Beach. If we want more comfort, we can hire a private car. It's comfortable but a bit expensive."],
+  ["Hnin Thiri","Let's take a private car."],
+  ["Htwe Thiri","Yes, {4}. Where shall we stay?"],
+  ["Hnin Thiri","{5}? That way we can wake up to the beautiful sound of the sea waves."],
+  ["Htwe Thiri","Perfect. We could also invite some of our best friends to join."],
+  ["Hnin Thiri","Sure. The more, the merrier. Then, we can split the costs."]],
+  ["How about going to a beach","Do you have any suggestions","How should we get there","It's a great idea","Shall we book a beachfront hotel"]),
+ xB(["How do I get to the airport from here","Excuse me","Can I pay with mobile banking","May I see your passport","Certainly","How may I help you"],[
+  ["A: Good morning, Super Vision Eye Care Centre. {}?\nB: Hello, I'd like to confirm my appointment for tomorrow at 8:00 a.m.","How may I help you"],
+  ["A: Could you tell me the Wi-Fi password?\nB: {}. The password is printed on the key card holder.","Certainly"],
+  ["A: {}. Could you tell me where the history section is?\nB: Sure. It's on the third floor, just past the reference desk.","Excuse me"],
+  ["A: {}?\nB: Of course, here it is.","May I see your passport"],
+  ["A: {}?\nB: Take the train on Platform 7. Ride for three stops, then transfer to the Airport Express.","How do I get to the airport from here"]])),
+SET(22,"26-2",
+ dA(["I want to renew this book","let us go","would you like to accompany me","I will come along with you","where are you going","let's go"],[
+  ["Yoon Yati","Hi! Sandy, {1}?"],
+  ["Sandy","Hi! Yoon. I'm going to the library. {2} so that I can finish it at the weekend. If you're free, {3}?"],
+  ["Yoon Yati","Actually, I borrowed a documentary film yesterday. Anyway, {4}."],
+  ["Sandy","OK, {5}."]],
+  ["where are you going","I want to renew this book","would you like to accompany me","I will come along with you","let's go"]),
+ xB(["I feel the same way.","That's all.","Not at all.","I got it.","Long time no see!","How do I look?"],[
+  ["A: Vegetable fried rice, please.\nB: Here you are. Anything else?\nA: No. {} Thanks.","That's all."],
+  ["A: I'm thinking of buying this dress. {}\nB: Wow! It suits you perfectly.","How do I look?"],
+  ["A: I believe learning English requires a lot of patience and regular practice.\nB: {} Regular effort really helps us improve.","I feel the same way."],
+  ["A: {} I didn't expect to meet you here.\nB: Same! It's two years since I last saw you.","Long time no see!"],
+  ["A: Are we going to talk about the budget today?\nB: Let me clarify that. We'll talk about it tomorrow, not today.\nA: {} Thank you.","I got it."]]))
+]});
+
+/* ================= ENGINE ================= */
+const KEY="g12eng_practice_v1";
+let ST={};
+try{ST=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){ST={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(ST))}catch(e){}};
+const st=k=>ST[k]||(ST[k]={v:"",r:0,c:null});
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const norm=s=>String(s).toLowerCase().replace(/[’‘`]/g,"'").replace(/[^a-z0-9']/g," ").replace(/\s+/g," ").trim();
+const app=document.getElementById("app");
+
+
+/* ================= GRAMMAR PATTERNS ================= */
+const GRAMMAR=[
+{t:"Nouns in apposition",p:"Sentence 1 (…, noun phrase,) + Sentence 2",r:"Turn one sentence into a noun phrase and put it right after the noun it describes, separated by commas. The noun phrase renames the noun.",ex:[["Bagan is the most famous ancient city in Myanmar. We will visit there next summer.","We will visit Bagan, the most famous ancient city in Myanmar, next summer."]],tip:"Use commas on both sides if the phrase is in the middle of the sentence."},
+{t:"Either … or / Neither … nor",p:"either A or B  ·  neither A nor B",r:"Either…or = one of two choices. Neither…nor = not one and not the other (negative meaning already, so no other 'not'). The verb agrees with the noun nearest to it.",ex:[["We do not believe him and neither does she.","Neither we nor she believes him."],["He may come today. He may come tomorrow.","He will come either today or tomorrow."]],tip:"Keep both parts in the same grammatical form."},
+{t:"Reported speech (statements)",p:"S + said (that) + backshifted clause",r:"Tense goes one step back: am/is → was, are → were, do/does → did, will → would, can → could, has/have/had done → had done, past simple → past perfect. Pronouns change to fit the speaker. Time words change: today → that day, tomorrow → the next day, yesterday → the day before, now → then, here → there, this → that.",ex:[["“I am tired,” she said.","She said that she was tired."]],tip:"No backshift is needed when the reporting verb is present tense or the statement is always true."},
+{t:"Reported speech (questions)",p:"S + asked + (wh-word / if / whether) + S + V",r:"Use normal statement word order, no question mark, and no do/does/did. Yes/no questions take if or whether. Backshift the tense as in reported statements.",ex:[["Zaw Zaw asked, “Why haven't you come to our Soon-kyway yesterday?”","Zaw Zaw asked why she had not come to their Soon-kyway the day before."],["“Do you like tea?” he asked.","He asked if/whether I liked tea."]],tip:"Questions → word order goes back to S + V."},
+{t:"Reported speech (commands / requests)",p:"S + told/asked + O + (not) to + verb",r:"Commands and requests become a to-infinitive. Negative: not to + verb.",ex:[["“Close the door,” she said to me.","She told me to close the door."],["“Don't be late,” he said.","He told me not to be late."]],tip:""},
+{t:"Passive voice",p:"be + past participle (+ by agent)",r:"The object of the active sentence becomes the subject. Keep the same tense in the form of be: present simple: am/is/are + V3; past simple: was/were + V3; present perfect: has/have been + V3; future: will be + V3; modal: modal + be + V3. The doer goes after 'by' (can be left out if unimportant).",ex:[["Workers weave silk thread into beautiful shirts.","Silk thread is woven into beautiful shirts by workers."],["The teachers are giving the students a day off.","The students are being given a day off by the teachers."]],tip:"Continuous passive: am/is/are/was/were + being + V3."},
+{t:"in order that / provided that / even though",p:"Sentence 1 + conjunction + Sentence 2",r:"in order that = purpose (so that). provided that = condition (only if). even though = contrast (in spite of the fact that). Choose the one that fits the meaning of the two sentences.",ex:[["I had two hours to spare for shopping. I couldn't find the suit I wanted.","Even though I had two hours to spare for shopping, I couldn't find the suit I wanted."],["You may go out. You must finish your homework first.","You may go out provided that you finish your homework."],["She saved money. She could buy a house.","She saved money in order that she could buy a house."]],tip:"After in order that, use can/could/will/would."},
+{t:"Relative pronouns and adverbs",p:"who · whom · whose · which · that · where · when · why",r:"who = person (subject). whom = person (object). whose = possession. which = thing. that = person or thing (not after a comma). where = place. when = time. why = reason. A clause that adds extra information is set off with commas.",ex:[["A police officer stopped and arrested the robbers. His car was parked at the next corner.","A police officer whose car was parked at the next corner stopped and arrested the robbers."],["This is the town. I was born there.","This is the town where I was born."]],tip:"Put the relative clause right after the noun it describes."},
+{t:"Cleft sentences (It is / was … who / that)",p:"It is/was + focus + who/that + rest",r:"Used to stress one part of a sentence. Move the part you want to stress right after It is/was, then add who (for people) or that (for things, time, place) and the rest of the sentence.",ex:[["The acrobat crossed the tightrope steadily.","It was the acrobat who crossed the tightrope steadily."],["Mya Mya bought the book yesterday.","It was the book that Mya Mya bought yesterday."]],tip:"The verb after who/that keeps the same tense as the original."},
+{t:"No matter + wh-word",p:"No matter + who/what/where/when/how + S + V, main clause",r:"Means 'whatever happens' — the main clause stays true in any case. ‘No matter whether … or …’ links two alternatives. Use a comma before the main clause.",ex:[["He is found innocent, or he is found guilty. Nonetheless, his reputation is permanently damaged.","No matter whether he is found innocent or guilty, his reputation is permanently damaged."],["However hard he tries, he cannot win.","No matter how hard he tries, he cannot win."]],tip:"No matter + verb 'be' keeps normal word order."},
+{t:"Third conditional",p:"If + S + had + V3, S + would/could/might + have + V3",r:"Imagines a different past, so the result did not happen. Use it for regret or an unreal past situation. A negative fact becomes a positive if-clause, and a positive result becomes would have + V3 (or reverse).",ex:[["She didn't switch on the lights, so she fell over the chair.","If she had switched on the lights, she would not have fallen over the chair."]],tip:"Do not use would have in the if-clause."},
+{t:"Not only … but also",p:"Not only + auxiliary + S + V, but S + also + V",r:"Joins two facts and stresses the first. After a sentence starting with ‘Not only’, the auxiliary comes before the subject (inversion). If there is no auxiliary, use do/does/did.",ex:[["The teachers are giving the students a day off. The principal is giving the students a day off.","Not only are the teachers giving the students a day off, but the principal is also giving them a day off."],["She sings. She dances.","Not only does she sing, but she also dances."]],tip:"Do not invert the clause that follows ‘but’."},
+{t:"Second conditional",p:"If + S + V2 / were, S + would + V",r:"Unreal or unlikely situation in the present or future. With be, use were for all subjects.",ex:[["I am not rich, so I can't buy a car.","If I were rich, I could buy a car."]],tip:"If I were you, I would …  = giving advice."},
+{t:"First conditional",p:"If + S + V1, S + will + V",r:"Real or likely situation in the future. Unless = if … not.",ex:[["Study hard or you will fail.","If you don't study hard, you will fail."],["If you don't hurry, you'll be late.","Unless you hurry, you'll be late."]],tip:""},
+{t:"Wish",p:"S + wish + S + V2 / had V3",r:"Present wish (unreal now): wish + past simple (were for be). Past regret: wish + had + V3. Future/complaint: wish + would.",ex:[["I don't have a car.","I wish I had a car."],["I didn't study.","I wish I had studied."]],tip:"Formal: I wish I were …"},
+{t:"Joining with participle phrases",p:"V-ing … / Having + V3 …",r:"When two actions have the same subject, one can become a participle phrase. V-ing = actions at the same time; Having + V3 = the first action finished before the second.",ex:[["She opened the door. She saw a stranger.","Opening the door, she saw a stranger."],["He finished his work. He went home.","Having finished his work, he went home."]],tip:"The subject of both parts must be the same."},
+{t:"Too … to / enough … to / so … that",p:"too adj to V · adj enough to V · so adj that + clause",r:"too…to = more than needed, negative result. enough…to = sufficient, positive result. so…that / such…that = result clause.",ex:[["The tea is so hot that I can't drink it.","The tea is too hot for me to drink."],["He is strong. He can lift the box.","He is strong enough to lift the box."]],tip:"too … to has a negative meaning, so no 'not' is needed."},
+{t:"Although / Despite / In spite of",p:"Although + clause · Despite/In spite of + noun / V-ing",r:"All show contrast. Although is followed by S + V. Despite / in spite of are followed by a noun, pronoun or V-ing.",ex:[["Although it rained, we went out.","In spite of the rain, we went out."],["He was tired. He kept working.","Despite being tired, he kept working."]],tip:"Do not use ‘but’ together with although."},
+{t:"Because / Because of / Owing to",p:"Because + clause · Because of / Owing to + noun / V-ing",r:"They show a reason. Because is followed by S + V; because of and owing to are followed by a noun phrase.",ex:[["He was late because the bus broke down.","He was late because of the bus breakdown."]],tip:""}
+];
+const gView=()=>{
+  app.innerHTML=`<div class="top"><a class="back" href="#">← Units</a><span></span></div>
+  <div class="eyebrow">EXTRA</div><h1>Grammar Patterns</h1>
+  <p class="lead">Short notes on the patterns used in Question III (sentence transformation). Tap a pattern to open it.</p>
+  <div class="tools"><button class="btn" data-act="gopen">Open all</button><button class="btn" data-act="gclose">Close all</button></div>
+  ${GRAMMAR.map((g,i)=>`<details class="gp"><summary><span class="gn">${i+1}</span>${esc(g.t)}</summary>
+   <div class="gpat">${esc(g.p)}</div><p class="grule">${esc(g.r)}</p>
+   ${g.ex.map(([a,b])=>`<div class="gex"><div><span class="al">BEFORE</span> ${esc(a)}</div><div><span class="al" style="color:var(--ok)">AFTER</span> <b>${esc(b)}</b></div></div>`).join("")}
+   ${g.tip?`<div class="gtip">Tip: ${esc(g.tip)}</div>`:""}</details>`).join("")}`;
+};
+const INDEX={};
+DATA.forEach(u=>u.secs.forEach((s,si)=>s.blocks.forEach((b,bi)=>b.items.forEach((it,ii)=>{
+  INDEX[`${u.id}.${si}.${bi}.${ii}`]={it,blk:b,type:b.type,num:(b.start||1)+ii,u:u.id,si};
+}))));
+const keysOf=(u,si)=>Object.keys(INDEX).filter(k=>INDEX[k].u===u.id&&(si==null||INDEX[k].si===si));
+function stats(u,si){
+  let t=0,d=0,c=0;
+  keysOf(u,si).forEach(k=>{t++;const x=ST[k];if(x&&x.c!=null){d++;if(x.c)c++;}});
+  return {t,d,c};
+}
+const statHTML=s=>`Checked <b>${s.d}</b> / ${s.t} · Correct <b style="color:var(--ok)">${s.c}</b>`;
+
+function grade(I,x){
+  if(I.type==="mcq")return x.v===I.it.a;
+  return [].concat(I.it.a).map(norm).includes(norm(x.v||""));
+}
+function itemHTML(k){
+  const I=INDEX[k],x=st(k),it=I.it,rev=x.r===1,exam=!!ST._exam;
+  const kp=k.split('.'),tg=(TAGS[kp.slice(0,3).join('.')]||'').split(' ')[+kp[3]];
+  const cls=rev?(x.c===true?"ok":x.c===false?"bad":""):"";
+  let body="";
+  if(I.type==="fill"){
+    const t=esc(it.q).replace(/\{([^}]*)\}/g,(_,l)=>`<span class="ini">${esc(l)}---------</span>`).replace(/\n/g,"<br>");
+    body=`<div class="qrow"><span class="num">(${I.num})</span><div class="qt">${t}</div></div>`;
+  }else if(I.type==="mcq"){
+    const sel=x.v;
+    const t=esc(it.q).replace("{}",`<span class="ini">---------</span>`);
+    body=`<div class="qrow"><span class="num">(${I.num})</span><div class="qt">${t}</div></div><div class="opts">`+
+      it.o.map((o,i)=>{let c="opt";if(rev){if(i===it.a)c+=" ok";else if(i===sel)c+=" bad";}else if(i===sel)c+=" sel";
+        return `<button class="${c}" data-act="opt" data-k="${k}" data-i="${i}"><b>${"ABC"[i]}</b><span>${esc(o)}</span></button>`}).join("")+`</div>`;
+  }else if(I.type==="dlg"){
+    const b=I.blk,ans=it.a;
+    const L=b.lines.map(([w,t])=>{
+      const tx=esc(t).replace(/\{(\d)\}/g,(_,n)=>rev?`<span class="bk" style="color:var(--ok)">(${n}) ${esc(ans[n-1])}</span>`:`<span class="bk">(${n}) ---------</span>`);
+      return `<p><span class="who">${esc(w)}:</span> ${tx}</p>`}).join("");
+    body=`<div class="dl">${L}</div>`;
+  }else{
+    body=`<div class="qrow"><span class="num">(${I.num})</span><div class="qt">${esc(it.q)}</div></div>`;
+  }
+  let ans="";
+  if(rev){
+    if(I.type!=="mcq"){
+      ans=`<div class="ans"><div class="al">ANSWER</div><div class="a">${I.type==="dlg"?it.a.map((a,i)=>`(${i+1}) ${esc(a)}`).join("<br>"):esc([].concat(it.a).join(" / ").replace(/\n/g," "))}</div>
+        <div class="self"><button class="btn ${x.c===true?"on-ok":""}" data-act="self" data-k="${k}" data-v="1">✓ I got it right</button><button class="btn ${x.c===false?"on-bad":""}" data-act="self" data-k="${k}" data-v="0">✗ Needs review</button></div></div>`;
+    }else{
+      const at=I.type==="mcq"?`${"ABC"[it.a]}) ${esc(it.o[it.a])}`:esc([].concat(it.a).join(" / "));
+      ans=`<div class="ans ${cls}"><b>${x.c?"✓ Correct":"✗ Wrong"}</b> · Answer: <span class="a">${at}</span></div>`;
+    }
+  }
+  const btn=exam?"":`<div class="ctl"><button class="btn" data-act="rev" data-k="${k}">${rev?"Hide answer":"Show answer"}</button></div>`;
+  const dc=rev&&x.c===true?" done-ok":rev&&x.c===false?" done-bad":"";
+  return `<div class="q${dc}" data-q="${k}">${tg?`<div class="tagrow">${tagHTML(tg)}</div>`:""}${body}${btn}${ans}</div>`;
+}
+function secHTML(u,si){
+  const s=u.secs[si];
+  let h=`<h2 class="sh">${esc(s.name)} ${s.tag?tagHTML(s.tag):""}</h2>`;if(s.note)h+=`<div class="ans bad" style="margin:8px 0">${esc(s.note)}</div>`;
+  if(s.passage)h+=`<div class="passage"><div class="pl">Read the passage. ${tagHTML(PTAGS[u.id+"."+si])}</div>${s.passage.map(p=>`<p>${esc(p)}</p>`).join("")}</div>`;
+  s.blocks.forEach((b,bi)=>{
+    h+=`<div class="blk"><div class="instr">${b.label?`<b>${b.label}</b> `:""}${esc(b.instr)} <span class="mk">(${b.marks} marks)</span></div>${b.box?`<div class="xbox">${b.box.map(x=>`<span>${esc(x)}</span>`).join("")}</div>`:""}`;
+    b.items.forEach((it,ii)=>{
+      if(b.groups&&b.groups[ii])h+=`<div class="grp"><span>${esc(b.groups[ii])}</span></div>`;
+      h+=itemHTML(`${u.id}.${si}.${bi}.${ii}`);
+    });
+    h+=`</div>`;
+  });
+  return h;
+}
+
+/* ---------- views ---------- */
+function home(){
+  const cards=TITLES.map((t,i)=>{
+    const u=DATA.find(d=>d.id===i+1);
+    if(!u)return `<div class="ucard off"><div class="u">UNIT ${i+1}</div><div class="t">${esc(t)}</div><div class="s">Coming soon</div></div>`;
+    const s=stats(u),p=s.t?Math.round(s.d/s.t*100):0;
+    return `<a class="ucard" href="#u${u.id}s0"><div class="u">UNIT ${u.id}</div><div class="t">${esc(t)}</div><div class="s">${statHTML(s)}</div><div class="bar"><i style="width:${p}%"></i></div></a>`;
+  }).join("");
+  app.innerHTML=`<div class="eyebrow">MATRICULATION · GRADE 12</div><h1>English Practice</h1>
+  <p class="lead">Practise old exam questions unit by unit. Answers are hidden until you tap “Show answer”.</p>
+  <div class="grid">${cards}</div>
+  <h3 class="gh">Extra sections</h3>
+  <div class="grid"><a class="ucard" href="#g"><div class="u">NOTES</div><div class="t">Grammar Patterns</div><div class="s">Quick notes with examples</div></a><a class="ucard" href="#u100s0"><div class="u">EXTRA</div><div class="t">Question No. VII · Dialogues</div><div class="s">${statHTML(stats(DATA.find(d=>d.id===100)))}</div></a>${EXTRAS.map(e=>`<div class="ucard off"><div class="t">${esc(e)}</div><div class="s">Coming soon</div></div>`).join("")}</div>
+  <div class="foot">Your progress is saved on this device only</div>`;
+}
+function unitView(u,si){
+  const s=u.secs[si];
+  app.innerHTML=`<div class="top"><a class="back" href="#">← Units</a><label class="ex"><input type="checkbox" id="exm" ${ST._exam?"checked":""}> Exam mode</label></div>
+  <div class="eyebrow">${u.eyebrow||"UNIT "+u.id}</div><h1>${esc(u.title)}</h1>
+  <div class="stat" id="ustat">${statHTML(stats(u))}</div>
+  <nav class="tabs">${u.secs.map((x,i)=>`<a class="tab ${i===si?"on":""}" href="#u${u.id}s${i}">${esc(x.tab)}</a>`).join("")}</nav>
+  <div class="tools"><div class="stat" id="sstat">This section: ${statHTML(stats(u,si))}</div>
+    ${ST._exam?`<button class="btn pri" data-act="all" data-u="${u.id}" data-s="${si}">Submit</button>`:`<button class="btn" data-act="all" data-u="${u.id}" data-s="${si}">Show all answers</button>`}
+    <button class="btn" data-act="hideall" data-u="${u.id}" data-s="${si}">Hide all answers</button>
+    <button class="btn" data-act="reset" data-u="${u.id}" data-s="${si}">Reset</button></div>
+  <section id="sec">${secHTML(u,si)}</section>
+  <div class="pager">${si>0?`<a class="btn" style="text-decoration:none" href="#u${u.id}s${si-1}">← ${esc(u.secs[si-1].tab)}</a>`:"<span></span>"}${si<u.secs.length-1?`<a class="btn pri" style="text-decoration:none" href="#u${u.id}s${si+1}">${esc(u.secs[si+1].tab)} →</a>`:"<span></span>"}</div>`;
+}
+function route(){
+  if(location.hash==="#g"){gView();window.__u=null;window.scrollTo(0,0);return;}
+  const mt=/^#u(\d+)s(\d+)$/.exec(location.hash);
+  const u=mt&&DATA.find(d=>d.id===+mt[1]);
+  const prev=window.__tabsL||0,prevU=window.__u;
+  if(u&&u.secs[+mt[2]]){
+    unitView(u,+mt[2]);
+    const nav=document.querySelector(".tabs"),on=nav&&nav.querySelector(".tab.on");
+    if(nav&&on){
+      if(prevU===u.id)nav.scrollLeft=prev;
+      const l=on.offsetLeft-nav.clientWidth/2+on.offsetWidth/2;
+      if(on.offsetLeft<nav.scrollLeft||on.offsetLeft+on.offsetWidth>nav.scrollLeft+nav.clientWidth)nav.scrollLeft=Math.max(0,l);
+      window.__tabsL=nav.scrollLeft;
+      nav.addEventListener("scroll",()=>{window.__tabsL=nav.scrollLeft},{passive:true});
+    }
+    window.__u=u.id;
+    const sec=document.getElementById("sec");
+    window.scrollTo(0,prevU===u.id&&sec?Math.max(0,sec.getBoundingClientRect().top+window.scrollY-120):0);
+  }else{home();window.__u=null;window.scrollTo(0,0);}
+}
+function cur(){const mt=/^#u(\d+)s(\d+)$/.exec(location.hash);return mt?{u:DATA.find(d=>d.id===+mt[1]),si:+mt[2]}:null;}
+function refreshItem(k){
+  const el=document.querySelector(`[data-q="${k}"]`);if(el)el.outerHTML=itemHTML(k);
+  const c=cur();if(!c)return;
+  document.getElementById("ustat").innerHTML=statHTML(stats(c.u));
+  document.getElementById("sstat").innerHTML="This section: "+statHTML(stats(c.u,c.si));
+}
+function setReveal(k,on){
+  const x=st(k);x.r=on?1:0;
+  if(on&&INDEX[k].type==="mcq")x.c=grade(INDEX[k],x);
+  save();
+}
+
+/* ---------- events ---------- */
+app.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;
+  const a=b.dataset.act,k=b.dataset.k;
+  if(a==="gopen"||a==="gclose"){document.querySelectorAll(".gp").forEach(d=>d.open=a==="gopen");return;}
+  if(a==="rev"){const x=st(k);setReveal(k,x.r!==1);refreshItem(k);}
+  else if(a==="opt"){const x=st(k);if(x.r===1)return;x.v=+b.dataset.i;save();refreshItem(k);}
+  else if(a==="self"){const x=st(k);x.c=b.dataset.v==="1";save();refreshItem(k);}
+  else if(a==="all"){
+    const u=DATA.find(d=>d.id===+b.dataset.u),si=+b.dataset.s;
+    keysOf(u,si).forEach(kk=>setReveal(kk,true));
+    unitView(u,si);
+  }
+  else if(a==="hideall"){
+    const u=DATA.find(d=>d.id===+b.dataset.u),si=+b.dataset.s;
+    keysOf(u,si).forEach(kk=>setReveal(kk,false));
+    unitView(u,si);
+  }
+  else if(a==="reset"){
+    
+    const u=DATA.find(d=>d.id===+b.dataset.u),si=+b.dataset.s;
+    keysOf(u,si).forEach(kk=>delete ST[kk]);save();unitView(u,si);
+  }
+});
+app.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset&&t.dataset.act==="inp"){st(t.dataset.k).v=t.value;save();}
+});
+app.addEventListener("change",e=>{
+  if(e.target.id==="exm"){ST._exam=e.target.checked;save();const c=cur();if(c)unitView(c.u,c.si);}
+});
+app.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&e.target.classList.contains("blank")){
+    e.preventDefault();const k=e.target.dataset.k;setReveal(k,true);refreshItem(k);
+  }
+});
+window.addEventListener("hashchange",route);
+route();
+</script>
+</body>
+</html>
